@@ -249,7 +249,7 @@ find_best_connection(Pid, Tid, Max_pipe) ->
                 _ ->
                     {ok, Pid}
             end;
-_ ->
+         _ ->
             find_best_connection(ets:next(Tid, Pid), Tid, Max_pipe)
     end.
 
