@@ -100,7 +100,8 @@
          show_dest_status/1,
          show_dest_status/2,
          get_metrics/0,
-         get_metrics/2
+         get_metrics/2,
+         remove_connection/1
         ]).
 
 -ifdef(debug).
@@ -706,6 +707,15 @@ rescan_config(File) when is_list(File) ->
 %% @doc Add additional configuration elements at runtime.
 add_config([{_,_}|_]=Terms) ->
     gen_server:call(?MODULE, {add_config_terms, Terms}).
+
+%% @doc Remove connection from ibrowse_lb ets.
+remove_connection(Url) ->
+    case catch parse_url(Url) of
+        #url{host = Host, port = Port} ->
+            ets:delete(ibrowse_lb, {Host, Port});
+        Err ->
+            {error, {url_parsing_failed, Err}}
+    end.
 
 %%====================================================================
 %% Server functions
