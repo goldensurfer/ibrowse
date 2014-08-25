@@ -334,7 +334,7 @@ handle_sock_data(Data, #state{status           = get_body,
                        interim_reply_sent = Irs} = State_1 ->
                     case Irs of
                         true ->
-                            active_once(State_1);
+                            do_setopts(Socket, [{active, once}], State);
                         false when Ccs == true ->
                             do_setopts(Socket, [{active, once}], State);
                         false ->
